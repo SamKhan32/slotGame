@@ -1,10 +1,13 @@
 from tkinter import *
 from tkinter import ttk
-
+from Pane import Pane
 
 
 def spin(*args):
     print("spin")
+    
+    
+
 def onSpinClick(event):
     spinButton.config(image=spinPressed)
 
@@ -12,6 +15,10 @@ def onSpinRelease(event):
     spinButton.config(image=spinUnpressed)
 root = Tk()
 root.title("Snake's Slots")
+"""Pane Creation"""
+pane1 = Pane()
+pane2 = Pane()
+pane3 = Pane()
 """PhotoImages for labels"""
 slotMachineImage = PhotoImage(file="slotGame//res/slotmachine.png")
 cherryImage = PhotoImage(file="slotGame//res/cherry.png")
@@ -41,3 +48,6 @@ children = frame.winfo_children()
 for child in children:
     child.grid_configure(padx=10,pady=10)
 root.mainloop()
+
+
+
