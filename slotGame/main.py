@@ -1,10 +1,20 @@
 from tkinter import *
 from tkinter import ttk
 from Pane import Pane
+import time
 
 
 def spin(*args):
-    print("spin")
+    target = (time.time() * 1000 ) + 2500
+    
+    while (time.time()*1000) < target:
+        slot1.config(image = sevenImage)
+        root.update()
+        slot1.config(image = cherryImage)
+        root.update()
+        slot1.config(image = barImage)
+        root.update()
+    slot1.config(image=cherryImage)
     
     
 
