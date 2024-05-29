@@ -15,14 +15,15 @@ def updateImages(pane, slot):
 def checkVictory(window):
     print("Victory Checking")
     for pane in window:
-        if pane != window[0]:
+        if pane.getImage() != window[0].getImage():
             return False
     return True
 def spinning(label):
-    for image in images:
-        label.config(image = image)
+    for symbol in symbols:
+        label.config(image = symbol)
         root.update()
 def gameAction(*args):
+    global score
     print("Spin method reached")
     pane1.generateSlot()
     pane2.generateSlot()
@@ -35,8 +36,22 @@ def gameAction(*args):
     updateImages(pane1,slot1)
     updateImages(pane2,slot2)
     updateImages(pane3,slot3)
-    checkVictory(window)
-
+    if checkVictory(window):
+        print("NIKE!")
+        if pane1.getImage()=="cherry":
+            print("score+= 20")
+            score = score+20
+            updateScore(score)
+        elif pane1.getImage()=="cherry":
+            print("score+= 100")
+            score = score+100
+            updateScore(score)
+        elif pane1.getImage() == "bar":
+            print("score+= 1000")
+            score = score+1000
+            updateScore(score)
+            
+        
     spinButton.config(state=NORMAL)
 def onSpinClick(event):
     print("Spin Button Click Reach")
@@ -48,10 +63,13 @@ def onSpinClick(event):
         gameAction()
 def onSpinRelease(event):
     spinButton.config(image=spinUnpressed)
+def updateScore(new_score):
+    canvas.itemconfig(score_text, text=str(new_score))
+    root.update()
 root = Tk()
 root.title("Snake's Slots")
-
-
+global score
+score=0
 """Symbol Weights"""
 cherryWeight = 50
 sevenWeight = 30
@@ -76,20 +94,18 @@ slotMachine = ttk.Label(frame, image = slotMachineImage)
 slot1 = ttk.Label(slotMachine, image = barImage)
 slot2 = ttk.Label(slotMachine, image = barImage)
 slot3 = ttk.Label(slotMachine, image = barImage)
-score = 0
-canvas = Canvas(frame,width=scoreImage.width, height=scoreImage.height)
+canvas = Canvas(frame,width=scoreImage.width(), height=scoreImage.height())
 canvas.create_image(0, 0, anchor=NW, image=scoreImage)
-score_text = canvas.create_text(scoreImage.width // 2, scoreImage.height // 2, text=str(score), fill="white", font=("Helvetica", 20))
+score_text = canvas.create_text(scoreImage.width() // 2, scoreImage.height() // 2, text=str(score), fill="red", font=("Helvetica", 30))
 spinButton = ttk.Button(frame, image = spinUnpressed)
-canvas.pack()
 """Set Grid layout"""
+canvas.grid(row=0,column=0,sticky="N")
 frame.grid(column=0,row=0,sticky="N")
-slotMachine.grid(column=0,row=0,sticky="N")
+slotMachine.grid(column=0,row=1,sticky="N")
 slot1.grid(column=0,row=0,sticky="W")
 slot2.grid(column=1,row=0,sticky="W")
 slot3.grid(column=2,row=0,sticky="W")
-
-spinButton.grid(column=1,row=1,sticky="N")
+spinButton.grid(column=1,row=1,sticky="E")
 """Bind Button Function"""
 spinButton.bind("<ButtonPress-1>", onSpinClick)
 spinButton.bind("<ButtonRelease-1>", onSpinRelease)
@@ -98,6 +114,9 @@ children = frame.winfo_children()
 for child in children:
     child.grid_configure(padx=10,pady=10)
 root.mainloop()
+
+
+
 
 
 
